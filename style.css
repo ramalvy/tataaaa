@@ -1,0 +1,325 @@
+/* === Variable & Reset === */
+:root {
+    --pixel-size: 5px;
+    --base-size-multiplier: 1;
+    --small-size-multiplier: 0.6;
+
+    /* Warna Hijau Dominan */
+    --color-bg: #e8f5e9; /* Hijau paling pucat */
+    --color-bg-alt: #c8e6c9; /* Hijau pucat (konten) */
+    --color-text: #2e7d32; /* Hijau medium-dark */
+    --color-border: #1b5e20; /* Hijau paling tua */
+    --color-highlight: #ffeb3b; /* Kuning cerah */
+    --color-shadow: #81c784; /* Hijau medium (shadow) */
+    --color-accent: #ff8a65; /* Sentuhan Oranye/Peach */
+    --color-heart: #e57373; /* Merah muda untuk hati */
+    --color-overlay-start: rgba(46, 125, 50, 0.95); /* Gradasi Overlay - Hijau Tua */
+    --color-overlay-end: rgba(102, 187, 106, 0.97); /* Gradasi Overlay - Hijau Medium */
+
+
+    /* Warna Pixel Ornamen (dapat disesuaikan lagi kontrasnya) */
+    --p-l: #a5d6a7; /* Light Green - Sesuaikan */
+    --p-d: #66bb6a; /* Sea Green - Sesuaikan */
+    --p-h: #ffffff; /* Putih */
+    --p-br: #a1887f; /* Coklat agak pudar */
+    --p-go: #ffc107; /* Amber */
+    --p-y: #fff9c4; /* Kuning Pucat */
+    --p-o: #ffb74d; /* Oranye Muda */
+    --p-w: #ffffff;
+    --p-dk: var(--color-border);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: calc(var(--pixel-size) * 4);
+    line-height: 1.5;
+    background-color: var(--color-bg); /* BG HIJAU */
+    color: var(--color-text);
+    overflow-x: hidden;
+    padding-top: 80px; /* Ruang cukup untuk header fixed */
+    position: relative; /* Untuk ornamen */
+}
+
+/* === Mesin Pixel Art === */
+.pixel-ornament { /* Kontainer ornamen (umumnya absolut/fixed) */
+    position: absolute;
+}
+
+.pixel-ornament .p { /* Pixel individual */
+    position: absolute;
+    width: calc(var(--pixel-size) * var(--base-size-multiplier));
+    height: calc(var(--pixel-size) * var(--base-size-multiplier));
+    background-color: grey; /* Fallback */
+}
+/* Modifier ukuran kecil (inline, ornamen kecil) */
+.pixel-ornament.small .p,
+.pixel-ornament.inline.small .p {
+     width: calc(var(--pixel-size) * var(--small-size-multiplier));
+     height: calc(var(--pixel-size) * var(--small-size-multiplier));
+}
+/* Ornamen Inline - Hapus pos absolut & animasi */
+.pixel-ornament.inline {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 calc(var(--pixel-size)*1);
+     animation: none !important;
+     filter: none !important;
+}
+/* Warna Pixel */
+.p.p-l{background-color:var(--p-l)}.p.p-d{background-color:var(--p-d)}.p.p-h{background-color:var(--p-h)}.p.p-br{background-color:var(--p-br)}.p.p-go{background-color:var(--p-go)}.p.p-y{background-color:var(--p-y)}.p.p-o{background-color:var(--p-o)}.p.p-w{background-color:var(--p-w)}.p.p-dk{background-color:var(--p-dk)}
+
+/* === Ornamen Background & Overlay === */
+.pixel-background-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+.pixel-star {
+    position: absolute; width: var(--pixel-size); height: var(--pixel-size);
+    background-color: var(--p-y); opacity: 0; animation: twinkle 5s infinite ease-in-out;
+    box-shadow: 0 0 calc(var(--pixel-size) * 2) var(--color-highlight);
+}
+.pixel-sparkle {
+     position: absolute; width: calc(var(--pixel-size)*2); height: calc(var(--pixel-size)*2);
+     opacity: 0; border: calc(var(--pixel-size)/2) solid var(--color-highlight);
+     animation: sparkle 4s infinite steps(3, end);
+}
+/* Posisi Bintang/Sparkle (Contoh) */
+.star-1{top:15%;left:10%;animation-delay:0s}.star-2{top:40%;left:85%;animation-delay:1.5s;width:calc(var(--pixel-size)*2);height:calc(var(--pixel-size)*2)}.star-3{top:65%;left:50%;animation-delay:3s}.star-4{top:85%;left:20%;animation-delay:.5s}
+.spark-1{top:30%;left:30%;animation-delay:1s}.spark-2{top:75%;left:70%;animation-delay:2.5s}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.8;transform:scale(1)}}
+@keyframes sparkle{0%,100%{opacity:0;transform:rotate(0deg) scale(.5)}50%{opacity:.6;transform:rotate(180deg) scale(1)}}
+
+.pixel-overlay-elements .pixel-ornament { /* Ornamen Tetap */
+     position: fixed; z-index: 5;
+     animation: gentlePixelSway 6s ease-in-out infinite alternate;
+}
+.pixel-overlay-elements .pixel-ornament.lentera-pixel {
+     animation-duration: 5.5s; animation-direction: alternate-reverse;
+      filter: drop-shadow(0 0 calc(var(--pixel-size)*3) var(--p-o));
+}
+@keyframes gentlePixelSway{0%{transform:translate(calc(var(--pixel-size)*-1), calc(var(--pixel-size)*-.5)) rotate(-4deg)}100%{transform:translate(calc(var(--pixel-size)*1), calc(var(--pixel-size)*.5)) rotate(4deg)}}
+
+/* === Header & Burger Menu Estetik === */
+.main-header.aesthetic-header {
+    position: fixed; top: 0; right: 0;
+    padding: 18px 22px; z-index: 1050; background: none; height: auto;
+}
+.menu-toggle-aesthetic {
+    background:none; border:none; cursor:pointer; padding:10px;
+    width:44px; height:44px; position:relative; z-index:1052;
+}
+.menu-toggle-aesthetic .line {
+    display:block; position:absolute; left:50%; width:28px; height:3px;
+    background-color: var(--color-border); /* Warna garis burger awal */
+    border-radius:3px; transform:translateX(-50%);
+    transition: transform .3s ease-in-out, opacity .2s ease, background-color .3s ease;
+}
+.menu-toggle-aesthetic .line-1{top:calc(50% - 8px)}
+.menu-toggle-aesthetic .line-2{top:50%; transform:translateX(-50%) translateY(-50%)}
+.menu-toggle-aesthetic .line-3{bottom:calc(50% - 8px)}
+/* Animasi X */
+body.menu-open .menu-toggle-aesthetic .line{ background-color: #fff; /* Warna putih di overlay */ }
+body.menu-open .menu-toggle-aesthetic .line-1{ transform: translateX(-50%) translateY(6.5px) rotate(45deg); }
+body.menu-open .menu-toggle-aesthetic .line-2{ opacity: 0; transform: translateX(-50%) scaleX(0); }
+body.menu-open .menu-toggle-aesthetic .line-3{ transform: translateX(-50%) translateY(-6.5px) rotate(-45deg); }
+/* Z-index toggle saat menu open */
+body.menu-open .main-header.aesthetic-header { z-index: 1053; }
+
+/* === Menu Overlay Estetik === */
+.menu-overlay-aesthetic {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--color-overlay-start), var(--color-overlay-end));
+    backdrop-filter: blur(10px); z-index: 1051;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden; transform: scale(1.05) translateY(-10px);
+    transition: opacity .4s cubic-bezier(.25,.46,.45,.94), visibility 0s linear .4s, transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+body.menu-open .menu-overlay-aesthetic {
+    opacity: 1; visibility: visible; transform: scale(1) translateY(0);
+    transition: opacity .4s cubic-bezier(.25,.46,.45,.94), visibility 0s linear 0s, transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.close-menu-btn-aesthetic { /* Opsional */
+    position: absolute; top: 18px; right: 22px; background: none; border: none;
+    color: #fff; font-size: 2.5rem; cursor: pointer; opacity: .8; z-index: 1053;
+}
+.overlay-nav-aesthetic { text-align: center; }
+.overlay-nav-aesthetic a {
+    display: block; color: #fff; text-decoration: none;
+    font-family: 'Poppins', sans-serif; /* Font Menu */
+    font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 600;
+    margin: 12px 0; padding: 10px 20px; opacity: 0; transform: translateY(20px);
+    transition: transform .5s cubic-bezier(.23,1,.32,1), opacity .5s cubic-bezier(.23,1,.32,1), color .3s ease;
+}
+.overlay-nav-aesthetic a:hover { color: var(--color-highlight); transform: translateY(20px) scale(1.05); }
+/* Animasi Stagger Link */
+body.menu-open .overlay-nav-aesthetic a { opacity: 1; transform: translateY(0); }
+body.menu-open .overlay-nav-aesthetic a:nth-child(1){transition-delay:.15s} body.menu-open .overlay-nav-aesthetic a:nth-child(2){transition-delay:.20s} body.menu-open .overlay-nav-aesthetic a:nth-child(3){transition-delay:.25s} body.menu-open .overlay-nav-aesthetic a:nth-child(4){transition-delay:.30s} body.menu-open .overlay-nav-aesthetic a:nth-child(5){transition-delay:.35s} body.menu-open .overlay-nav-aesthetic a:nth-child(6){transition-delay:.40s}
+.overlay-footer { /* Footer kecil di overlay */
+     position: absolute; bottom: 20px; color: rgba(255,255,255,0.6); font-size: 0.9rem;
+     font-family: 'Poppins', sans-serif;
+}
+
+/* Lock Scroll Body */
+body.menu-open { overflow: hidden; }
+
+/* === Struktur Halaman & Konten === */
+#page-container { padding: calc(var(--pixel-size)*2); }
+.page-section {
+    display: none; opacity: 0; transition: opacity 0.4s ease-out; min-height: 70vh;
+    & .scroll-pixel-in { opacity: 0; } /* Reset state animasi */
+}
+.page-section.active {
+    display: block; opacity: 1;
+     & .scroll-pixel-in.visible { opacity: 1; animation: pixelateIn 0.7s cubic-bezier(.68,-.55,.27,1.55) forwards; }
+}
+.content-wrapper {
+    margin: calc(var(--pixel-size)*6) auto; padding: calc(var(--pixel-size)*6);
+    max-width: 800px; background-color: var(--color-bg-alt); text-align: center;
+}
+.pixel-border {
+    border: var(--pixel-size) solid var(--color-border);
+    box-shadow: var(--pixel-size) var(--pixel-size) 0 0 var(--color-shadow),
+                 inset calc(var(--pixel-size)/2) calc(var(--pixel-size)/2) 0 0 rgba(255,255,255,0.4),
+                 inset calc(var(--pixel-size)/-2) calc(var(--pixel-size)/-2) 0 0 rgba(0,0,0,0.15);
+}
+
+/* Judul Halaman */
+.page-title {
+     font-size: calc(var(--pixel-size) * 7);
+     font-weight: 700; color: var(--color-text);
+     margin-bottom: calc(var(--pixel-size)*1);
+}
+.page-subtitle { /* Hanya di beranda */
+      font-size: calc(var(--pixel-size) * 5);
+     color: var(--color-border); margin-bottom: calc(var(--pixel-size)*4);
+}
+
+/* === Styling Halaman Spesifik === */
+/* Tahun 1446 H */
+.eid-year-container { display: flex; justify-content: center; gap: var(--pixel-size); margin-bottom: calc(var(--pixel-size)*4); }
+.year-box, .hijri-h {
+    font-size: calc(var(--pixel-size)*6); font-weight: 700; color: var(--color-bg-alt);
+    background: var(--color-text); padding: var(--pixel-size) calc(var(--pixel-size)*2);
+     min-width: calc(var(--pixel-size)*8); text-align: center;
+}
+.arabic-greeting { color: var(--p-d); margin-bottom: calc(var(--pixel-size)/2); font-style: italic; }
+.greeting-message { margin-bottom: calc(var(--pixel-size)*4); font-weight: bold; }
+
+/* Galeri */
+#page-gallery .pixel-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(calc(var(--pixel-size)*25),1fr));gap:calc(var(--pixel-size)*3);margin-top:calc(var(--pixel-size)*4)}
+.gallery-item{padding:calc(var(--pixel-size)*3);background:var(--color-bg);display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:calc(var(--pixel-size)*20);font-size:calc(var(--pixel-size)*3)}
+.gallery-item .pixel-icon{font-size:calc(var(--pixel-size)*8);margin-top:var(--pixel-size); line-height: 1;}
+
+.gallery {
+    display: flex;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.gallery img {
+    width: 100px;
+    height: 100px;
+    border: 2px solid white;
+    border-radius: 13px;
+    box-shadow: 4px 7px 7px 0px #00000042;
+    cursor: pointer;
+    margin: 10px;
+    transition: 400ms;
+}
+
+.gallery img:hover {
+filter: grayscale(1);
+transform: scale(1.03);
+}
+
+/* Ucapan */
+#page-wishes .wish-form{margin:calc(var(--pixel-size)*4) auto;max-width:80%}
+.pixel-label { display: block; margin-bottom: var(--pixel-size); text-align: left; font-size: calc(var(--pixel-size)*3); font-weight: bold;}
+.pixel-input,.pixel-button{display:block;width:100%;padding:calc(var(--pixel-size)*2);margin-bottom:calc(var(--pixel-size)*3);font-family:'Pixelify Sans',sans-serif;font-size:calc(var(--pixel-size)*3.5);background:var(--color-bg);color:var(--color-text); border: var(--pixel-size) solid var(--color-border); box-shadow: inset 1px 1px 0 0 var(--color-shadow);}
+.pixel-input{height:calc(var(--pixel-size)*15)}
+.pixel-button{cursor:pointer;font-weight:700;color:var(--color-bg-alt);background:var(--color-text);border:calc(var(--pixel-size)/1.5) solid var(--color-border);box-shadow:inset 0 0 0 calc(var(--pixel-size)/2) var(--color-text),calc(var(--pixel-size)) calc(var(--pixel-size)) 0 0 var(--color-shadow);transition:transform .1s linear,box-shadow .1s linear}
+.pixel-button:active{transform:translate(var(--pixel-size),var(--pixel-size));box-shadow:inset 0 0 0 calc(var(--pixel-size)/2) var(--color-text)}
+.small-note { font-size: calc(var(--pixel-size)*2.5); opacity: 0.7; }
+#page-wishes .pixel-hearts{margin-top:calc(var(--pixel-size)*3);font-size:calc(var(--pixel-size)*5);animation:heartBeat 1.5s infinite ease-in-out}
+.p-heart{display: inline-block; margin: 0 calc(var(--pixel-size)/2); } .p-heart:nth-child(1){color: var(--color-heart);} .p-heart:nth-child(2){color: #a5d6a7;} .p-heart:nth-child(3){color: var(--color-highlight);}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+/* Peta */
+#page-map .pixel-map-container{margin-top:calc(var(--pixel-size)*4)}
+.map-area{position:relative;width:90%;max-width: 500px; height:calc(var(--pixel-size)*60);background:#e8f5e9;margin:auto;overflow:hidden}
+.map-icon{position:absolute;font-size:calc(var(--pixel-size)*5);animation:mapBob 3s infinite ease-in-out;display:flex; flex-direction: column; align-items: center; }
+.map-icon .label { font-size: calc(var(--pixel-size)*2); background: rgba(0,0,0,0.5); color: white; padding: 0 calc(var(--pixel-size)/2); border-radius: 2px; margin-top: calc(var(--pixel-size)/2); white-space: nowrap;}
+.map-icon.home{animation-delay:0s}.map-icon.city{animation-delay:.5s}.map-icon.rest{animation-delay: 0.8s;}.map-icon.destination{animation-delay:1s}
+.map-line { position: absolute; height: calc(var(--pixel-size) / 1.5); background-color: var(--color-shadow); opacity: 0.6;}
+@keyframes mapBob{0%,100%{transform:translateY(0)}50%{transform:translateY(calc(var(--pixel-size)*-1))}}
+
+/* Credits */
+.creator-name { font-weight:700; font-size:calc(var(--pixel-size)*4.5); color:var(--color-text); background-color:var(--color-highlight); padding:var(--pixel-size) calc(var(--pixel-size)*3); display:inline-block; margin-top: var(--pixel-size)*2; border-color: var(--color-border); box-shadow: none var(--color-shadow); }
+
+
+/* === Animasi Scroll Pixelated === */
+@keyframes pixelateIn { /* Sama */
+    0%{opacity:0; clip-path:inset(50% 50% 50% 50%); transform:scale(.8)}
+    50%{opacity:.5; clip-path:inset(25% 25% 25% 25%); transform:scale(1.05)}
+    100%{opacity:1; clip-path:inset(0% 0% 0% 0%); transform:scale(1)}
+}
+.scroll-pixel-in{opacity:0; transition:opacity .1s linear} /* Sama */
+/* Trigger ada di .page-section.active */
+
+
+/* === Footer === */
+.footer-pixel {
+    margin-top:calc(var(--pixel-size)*10); padding:calc(var(--pixel-size)*3) 0;
+    text-align:center; background-color:var(--color-text); color:var(--color-bg-alt);
+    border-top:var(--pixel-size) solid var(--color-border);
+    font-size: calc(var(--pixel-size)*3);
+}
+
+/* === Responsiveness === */
+@media (max-width: 768px) {
+    :root { --pixel-size: 4px; }
+    body { padding-top: 70px; font-size: calc(var(--pixel-size)*4.2);}
+    .main-header.aesthetic-header { padding: 15px 18px; }
+    .content-wrapper { max-width: 90vw; padding: calc(var(--pixel-size)*5); }
+    /* Sembunyikan ornamen tetap yg kecil jika perlu */
+     .pixel-overlay-elements .pixel-ornament.lentera-pixel { /* Misal, lentera bawah disembunyikan */
+          display: none;
+     }
+}
+
+@media (max-width: 480px) {
+     :root { --pixel-size: 3.5px; --small-size-multiplier: 0.55; }
+     body { padding-top: 65px; font-size: calc(var(--pixel-size)*4.5); }
+      .main-header.aesthetic-header { padding: 12px 15px; }
+       .menu-toggle-aesthetic { width: 40px; height: 40px;}
+       .menu-toggle-aesthetic .line { width: 24px; height: 2.5px;}
+       .menu-toggle-aesthetic .line-1{top:calc(50% - 7px)}
+       .menu-toggle-aesthetic .line-3{bottom:calc(50% - 7px)}
+       body.menu-open .menu-toggle-aesthetic .line-1{ transform: translateX(-50%) translateY(5.5px) rotate(45deg); }
+       body.menu-open .menu-toggle-aesthetic .line-3{ transform: translateX(-50%) translateY(-5.5px) rotate(-45deg); }
+       .overlay-nav-aesthetic a { font-size: clamp(1.5rem, 6vw, 2rem); margin: 10px 0;}
+        .pixel-gallery {grid-template-columns: repeat(auto-fit, minmax(calc(var(--pixel-size)*30), 1fr)); } /* Atur ulang galeri */
+        #page-wishes .wish-form { max-width: 95%; }
+        .map-icon{ font-size: calc(var(--pixel-size)*6); }
+        .map-icon .label { font-size: calc(var(--pixel-size)*2.2);}
+
+      /* Sembunyikan semua ornamen tetap jika terlalu ramai */
+      .pixel-overlay-elements .pixel-ornament {
+           /* display: none; */
+           /* atau perkecil ukurannya drastis */
+           transform: scale(0.7);
+      }
+       .pixel-overlay-elements .pixel-ornament.ketupat-pixel { top: 10px; left: 10px;}
+}
